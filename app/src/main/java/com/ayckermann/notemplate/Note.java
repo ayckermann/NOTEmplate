@@ -1,18 +1,13 @@
 package com.ayckermann.notemplate;
 
-public class Model {
+public class Note {
+    public String judul, content, tanggal;
 
-    public String judul, content;
-
-    public String template;
-
-    public Model( String judul, String content, String template) {
-
+    public Note(String judul, String content, String tanggal) {
         this.judul = judul;
         this.content = content;
-        this.template = template;
+        this.tanggal = tanggal;
     }
-
 
     public String getJudul() {
         return judul;
@@ -30,14 +25,11 @@ public class Model {
         this.content = content;
     }
 
-    public String getTemplate() {
-        return template;
+    public String getTanggal() {
+        return tanggal;
     }
 
-    public void setTemplate(String template) {
-        this.template = template;
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
     }
 }
-
-
-

@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         for (int i =0; i< transfer.size();i++){
-            listModel.add(new Model(transfer.get(i).getId(), transfer.get(i).getJudul(), transfer.get(i).getContent(), transfer.get(i).getTemplate()));
-
+            listModel.add(new Model( transfer.get(i).getJudul(), transfer.get(i).getContent(), transfer.get(i).getTemplate()));
         }
         listAdapter.notifyDataSetChanged();
 

@@ -2,6 +2,7 @@ package com.ayckermann.notemplate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,10 +47,24 @@ public class listAdapter extends RecyclerView.Adapter<listAdapter.ViewHolder> {
                 Intent intent = new Intent();
                 if(model.template.equals("Note")){
                     intent = new Intent(view.getContext(), templateNote.class);
-                    intent.putExtra("id", model.getId());
+                    intent.putExtra("id", holder.getAdapterPosition());
                     intent.putExtra("judul", model.getJudul());
                     intent.putExtra("content", model.getContent());
                     intent.putExtra("template", model.getTemplate());
+                    intent.putExtra("tanggal", templateNote.listNote.get(holder.getAdapterPosition()).getTanggal());
+
+                }
+                else if(model.template.equals("Todo")){
+                    intent = new Intent(view.getContext(), templateTodo.class);
+                    intent.putExtra("id", holder.getAdapterPosition());
+                    intent.putExtra("judul", model.getJudul());
+                    intent.putExtra("content", model.getContent());
+                    intent.putExtra("template", model.getTemplate());
+                    Log.e("size", String.valueOf(templateTodo.listTodo.size()));
+                    for(int i =0; i < templateTodo.listTodo.size();i++){
+                        intent.putExtra("check"+i, templateTodo.listTodo.get(i).isCheck());
+                        intent.putExtra("text"+i, templateTodo.listTodo.get(i).getText());
+                    }
                 }
                 view.getContext().startActivity(intent);
             }

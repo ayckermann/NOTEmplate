@@ -38,6 +38,7 @@ public class selectTemplate extends Activity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int)(width*0.8),(int)(height*0.4));
+        getWindow().setBackgroundDrawableResource(R.drawable.rounded_item);
 
     }
 
