@@ -1,19 +1,17 @@
 package com.ayckermann.notemplate;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.ayckermann.notemplate.Template.templateJadwal;
+import com.ayckermann.notemplate.Template.templateNote;
+import com.ayckermann.notemplate.Template.templateTodo;
 
 public class selectTemplate extends Activity {
 

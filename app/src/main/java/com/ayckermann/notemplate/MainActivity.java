@@ -6,24 +6,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.controls.actions.FloatAction;
 import android.view.View;
 import android.widget.Button;
 
+import com.ayckermann.notemplate.Adapter.adapterNote;
+import com.ayckermann.notemplate.Adapter.adapterTodo;
+import com.ayckermann.notemplate.Model.HeadTodo;
+import com.ayckermann.notemplate.Model.Note;
+import com.ayckermann.notemplate.Model.Todo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    listAdapter listAdapter;
+    RecyclerView rvNote;
+    RecyclerView rvTodo;
+    com.ayckermann.notemplate.Adapter.adapterNote adapterNote;
+    com.ayckermann.notemplate.Adapter.adapterTodo adapterTodo;
     FloatingActionButton btnAdd;
     Button btnNote, btnTodo, btnJadwal;
 
-    static  ArrayList<Model> transfer = new ArrayList<>();
-    ArrayList<Model> listModel = new ArrayList<>();
+    public static ArrayList<Note> transferNote = new ArrayList<>();
+    ArrayList<Note> listNote = new ArrayList<>();
 
+    public static ArrayList<Todo> transferTodo = new ArrayList<>();
+    ArrayList<Todo> listTodo = new ArrayList<>();
+
+    public static ArrayList<HeadTodo> transferHeadTodo = new ArrayList<>();
+    ArrayList<HeadTodo> listHeadTodo = new ArrayList<>();
+
+    public static int idT =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +52,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        for (int i =0; i< transfer.size();i++){
-            listModel.add(new Model( transfer.get(i).getJudul(), transfer.get(i).getContent(), transfer.get(i).getTemplate()));
+        listNote.add(new Note("NOTE","","" ));
+        for (int i =0; i< transferNote.size();i++){
+            listNote.add(new Note(transferNote.get(i).getJudul(), transferNote.get(i).getContent(), transferNote.get(i).getTanggal()));
         }
-        listAdapter.notifyDataSetChanged();
+        adapterNote.notifyDataSetChanged();
+
+        listHeadTodo.add(new HeadTodo(0,"TODO"));
+        for (int i =0; i< transferHeadTodo.size();i++){
+
+            listHeadTodo.add(new HeadTodo(transferHeadTodo.get(i).getId() ,transferHeadTodo.get(i).getJudul()));
+
+        }
+        adapterTodo.notifyDataSetChanged();
+
 
     }
     public void initComponent(){
-
-
         btnAdd = findViewById(R.id.btnAdd);
         btnNote = findViewById(R.id.btnNote);
         btnTodo =  findViewById(R.id.btnTodo);
         btnJadwal =  findViewById(R.id.btnJadwal);
 
-        listAdapter =new listAdapter(listModel);
-        recyclerView = findViewById(R.id.rvMenu);
-        recyclerView.setAdapter(listAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapterNote =new adapterNote(listNote);
+        rvNote = findViewById(R.id.rvNote);
+        rvNote.setAdapter(adapterNote);
+        rvNote.setLayoutManager(new LinearLayoutManager(this));
+
+        adapterTodo =new adapterTodo(listHeadTodo);
+        rvTodo = findViewById(R.id.rvTodo);
+        rvTodo.setAdapter(adapterTodo);
+        rvTodo.setLayoutManager(new LinearLayoutManager(this));
 
     }
 

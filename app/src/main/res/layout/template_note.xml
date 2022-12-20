@@ -50,8 +50,8 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
 
-        <EditText
-            android:id="@+id/edtTanggal"
+        <TextView
+            android:id="@+id/txtTanggal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -59,12 +59,11 @@
             android:background="@null"
             android:ems="10"
             android:hint="Date"
-            android:inputType="date"
             android:paddingRight="15dp"
             android:textAlignment="textEnd"
             android:textColor="#000000"
             android:textColorHint="#737373"
-            tools:ignore="TouchTargetSizeCheck" />
+         />
 
         <EditText
             android:id="@+id/edtContentNote"

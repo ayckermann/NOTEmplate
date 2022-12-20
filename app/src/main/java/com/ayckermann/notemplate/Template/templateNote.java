@@ -1,15 +1,19 @@
-package com.ayckermann.notemplate;
+package com.ayckermann.notemplate.Template;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
+import com.ayckermann.notemplate.MainActivity;
+import com.ayckermann.notemplate.Model.Note;
+import com.ayckermann.notemplate.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormatSymbols;
@@ -19,12 +23,10 @@ import java.util.Calendar;
 
 public class templateNote extends Activity {
 
-
     EditText edtJudul, edtContent;
     FloatingActionButton btnSave;
-    EditText edtTanggal;
+    TextView txtTanggal;
 
-    static ArrayList<Note> listNote = new ArrayList<>();
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class templateNote extends Activity {
 
         initComponent();
 
-        edtTanggal.setOnClickListener(new View.OnClickListener() {
+        txtTanggal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setTanggal();
@@ -43,27 +45,29 @@ public class templateNote extends Activity {
 
         Intent intent = getIntent();
         getIntent().getExtras();
-        if (intent.hasExtra("judul")){
-            int id = intent.getIntExtra("id",0);
-            String judul = intent.getStringExtra("judul");
-            String content = intent.getStringExtra("content");
-            String tanggal = intent.getStringExtra("tanggal");
+        if (intent.hasExtra("judulN")){
+            int id = intent.getIntExtra("idN",0);
+            String judul = intent.getStringExtra("judulN");
+            String content = intent.getStringExtra("contentN");
+            String tanggal = intent.getStringExtra("tanggalN");
 
-            String template = intent.getStringExtra("template");
 
             edtJudul.setText(judul);
             edtContent.setText(content);
-            edtTanggal.setText(tanggal);
+            txtTanggal.setText(tanggal);
 
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String judul2 = edtJudul.getText().toString();
                     String content2 = edtContent.getText().toString();
-                    String tanggal2 = edtTanggal.getText().toString();
+                    String tanggal2 = txtTanggal.getText().toString();
 
-                    MainActivity.transfer.set(id, new Model(judul2,content2,template));
-                    listNote.set(id,new Note(judul2,content2,tanggal2));
+                    Log.e("i", String.valueOf(id));
+                    Log.e("e", String.valueOf(MainActivity.transferNote.size()));
+
+                    MainActivity.transferNote.set(id, new Note( judul2,content2, tanggal2));
+
 
                     startActivity(new Intent(view.getContext(), MainActivity.class));
                 }
@@ -75,11 +79,9 @@ public class templateNote extends Activity {
                 public void onClick(View view) {
                     String judul = edtJudul.getText().toString();
                     String content = edtContent.getText().toString();
-                    String tanggal = edtTanggal.getText().toString();
+                    String tanggal = txtTanggal.getText().toString();
 
-                    MainActivity.transfer.add(new Model(judul,content,"Note"));
-
-                    listNote.add(new Note(judul,content,tanggal));
+                    MainActivity.transferNote.add(new Note(judul,content,tanggal));
 
                     startActivity(new Intent(view.getContext(), MainActivity.class));
 
@@ -91,43 +93,30 @@ public class templateNote extends Activity {
     public void initComponent(){
         edtJudul = findViewById(R.id.edtJudulNote);
         edtContent = findViewById(R.id.edtContentNote);
-        edtTanggal = (EditText) findViewById(R.id.edtTanggal);
-        edtTanggal.setInputType(InputType.TYPE_NULL);
-
+        txtTanggal = findViewById(R.id.txtTanggal);
         btnSave = (FloatingActionButton) findViewById(R.id.btnSaveNote);
     }
 
 
     public void setTanggal(){
-
-        // on below line we are getting
-        // the instance of our calendar.
         final Calendar c = Calendar.getInstance();
 
-        // on below line we are getting
-        // our day, month and year.
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        // on below line we are creating a variable for date picker dialog.
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                // on below line we are passing context.
-                this,
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        // on below line we are setting date to our edit text.
-                        edtTanggal.setText( getMonthForInt(monthOfYear)+ " " + dayOfMonth + ", " + year);
+                        txtTanggal.setText( getMonthForInt(monthOfYear)+ " " + dayOfMonth + ", " + year);
 
                     }
                 },
-                // on below line we are passing year,
-                // month and day for selected date in our date picker.
+
                 year, month, day);
-        // at last we are calling show to
-        // display our date picker dialog.
         datePickerDialog.show();
     }
     String getMonthForInt(int num) {

@@ -28,13 +28,13 @@
         <activity
             android:name=".selectTemplate"
             android:theme="@style/PopUp"></activity>
-        <activity android:name=".templateNote"
+        <activity android:name=".Template.templateNote"
             android:exported="true">
         </activity>
-        <activity android:name=".templateTodo"
+        <activity android:name=".Template.templateTodo"
             android:exported="true">
         </activity>
-        <activity android:name=".templateJadwal"
+        <activity android:name=".Template.templateJadwal"
             android:exported="true">
         </activity>
     </application>

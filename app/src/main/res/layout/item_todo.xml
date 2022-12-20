@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item"
+    android:id="@+id/itemTodo"
     android:background="@drawable/rounded_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,18 +13,21 @@
     android:layout_marginTop="10dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtJudul"
+    <LinearLayout
+        android:id="@+id/listItemTodo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="14sp" />
+        <TextView
+            android:id="@+id/txtJudulT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
 </LinearLayout>

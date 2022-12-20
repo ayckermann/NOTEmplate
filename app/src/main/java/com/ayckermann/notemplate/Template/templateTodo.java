@@ -1,6 +1,4 @@
-package com.ayckermann.notemplate;
-
-import static androidx.core.view.ViewCompat.setBackground;
+package com.ayckermann.notemplate.Template;
 
 import android.app.Activity;
 
@@ -23,6 +21,10 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import com.ayckermann.notemplate.MainActivity;
+import com.ayckermann.notemplate.Model.HeadTodo;
+import com.ayckermann.notemplate.R;
+import com.ayckermann.notemplate.Model.Todo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -35,8 +37,8 @@ public class templateTodo extends Activity {
     EditText edtJudul,edtContent;
     LinearLayout linearLayout;
 
-    static ArrayList<Todo> listTodo = new ArrayList<>();
-
+    ArrayList<EditText> editTexts = new ArrayList<EditText>();
+    ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,30 +59,27 @@ public class templateTodo extends Activity {
 
         Intent intent = getIntent();
         getIntent().getExtras();
-        if (intent.hasExtra("judul")){
+        if (intent.hasExtra("judulT")){
 
-            int id = intent.getIntExtra("id",0);
-            String judul = intent.getStringExtra("judul");
-            String content = intent.getStringExtra("content");
-
-            String template = intent.getStringExtra("template");
+            int id2 = intent.getIntExtra("idT",0);
+            String judul = intent.getStringExtra("judulT");
 
             edtJudul.setText(judul);
-            edtContent.setText(content);
 
-            Log.e("size", String.valueOf(listTodo.size()));
-            for(int i =0; i <listTodo.size();i++){
-                addItem(intent.getBooleanExtra("check"+1, false), intent.getStringExtra("text"+1));
+            for(int i = 0; i <MainActivity.transferHeadTodo.size();i++){
+                if(MainActivity.transferTodo.get(i).getId() == id2){
+                    addItem(intent.getBooleanExtra("checkT"+i, false), intent.getStringExtra("textT"+i));
+                }
+
             }
 
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String judul2 = edtJudul.getText().toString();
-                    String content2 = edtContent.getText().toString();
 
-                    MainActivity.transfer.set(id,new Model(judul2,content2,"Todo"));
-
+                    MainActivity.transferHeadTodo.set(id2, new HeadTodo(id2, judul2));
+                    setData(id2);
                     startActivity(new Intent(view.getContext(), MainActivity.class));
                 }
             });
@@ -90,12 +89,12 @@ public class templateTodo extends Activity {
                 @Override
                 public void onClick(View view) {
                     String judul = edtJudul.getText().toString();
-                    String content = edtContent.getText().toString();
 
-                    MainActivity.transfer.add(new Model(judul,content,"Todo"));
+                    getData(MainActivity.idT);
+                    MainActivity.transferHeadTodo.add(new HeadTodo(MainActivity.idT, judul ));
+                    MainActivity.idT++;
 
                     startActivity(new Intent(view.getContext(), MainActivity.class));
-
                 }
             });
         }
@@ -117,10 +116,12 @@ public class templateTodo extends Activity {
 
 
         final CheckBox checkBox =new CheckBox(this);
+        checkBoxes.add(checkBox);
         checkBox.setChecked(check);
         layoutItem.addView(checkBox);
 
         final EditText editText = new EditText(this);
+        editTexts.add(editText);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -163,8 +164,7 @@ public class templateTodo extends Activity {
         layoutItem.addView(delete);
 
         linearLayout.addView(layoutItem);
-        listTodo.add(new Todo(checkBox.isChecked() , editText.getText().toString()));
-    };
+    }
     public void initComponent(){
         btnSave = (FloatingActionButton) findViewById(R.id.btnSaveTodo);
         btnAdd = (ImageButton) findViewById(R.id.btnAddTodo);
@@ -173,12 +173,21 @@ public class templateTodo extends Activity {
 
 
         linearLayout = findViewById(R.id.layoutItem);
-
-
     }
 
-
-
+    public void getData(int id3){
+        for(int i=0; i< editTexts.size();i++){
+            MainActivity.transferTodo.add (new Todo(id3,checkBoxes.get(i).isChecked(),editTexts.get(i).getText().toString()));
+            Log.e("ID3", Integer.toString(id3));
+        }
+    }
+    public void setData(int id3){
+        for(int i=0; i< editTexts.size();i++){
+            if(MainActivity.transferTodo.get(i).getId() == id3){
+                MainActivity.transferTodo.set(i,new Todo(id3, checkBoxes.get(i).isChecked(), editTexts.get(i).getText().toString()));
+            }
+        }
+    }
 
 
 
