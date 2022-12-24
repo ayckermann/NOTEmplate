@@ -1,5 +1,6 @@
 package com.ayckermann.notemplate.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -26,6 +27,7 @@ import com.ayckermann.notemplate.Model.Note;
 import com.ayckermann.notemplate.Model.Todo;
 import com.ayckermann.notemplate.R;
 import com.ayckermann.notemplate.Template.templateNote;
+import com.ayckermann.notemplate.Template.templateTodo;
 
 import java.util.ArrayList;
 
@@ -68,14 +70,49 @@ public class adapterTodo extends RecyclerView.Adapter<adapterTodo.ViewHolder> {
                 public void onClick(View view) {
                     Intent intent = new Intent();
 
-                    intent = new Intent(view.getContext(), adapterTodo.class);
+                    intent = new Intent(view.getContext(), templateTodo.class);
                     intent.putExtra("idT", holder.getAdapterPosition() -1);
                     intent.putExtra("judulT", headTodo.getJudul());
 
-
+                    for(int i =0; i < MainActivity.transferTodo.size(); i++){
+                        if(holder.getAdapterPosition()-1 == MainActivity.transferTodo.get(i).getId()){
+                            intent.putExtra("checkT"+i, MainActivity.transferTodo.get(i).isCheck());
+                            intent.putExtra("textT"+i, MainActivity.transferTodo.get(i).getText());
+                        }
+                    }
 
                     view.getContext().startActivity(intent);
                 }
+            });
+            holder.itemView.setOnLongClickListener(view -> {
+
+                int p = position;
+                AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+                alert.setTitle("Delete Note " + headTodo.getJudul() + " ?")
+                        .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
+                        .setNegativeButton("Yes", (dialogInterface, i) -> {
+
+                            MainActivity.transferHeadTodo.remove(p-1);
+
+                            for(int x =0; x < MainActivity.transferTodo.size(); x++){
+                                if(p == MainActivity.transferTodo.get(x).getId()){
+                                    MainActivity.transferTodo.remove(x);
+                                    Log.e("ANJAS", String.valueOf(MainActivity.transferTodo.get(x).getId()) );
+                                }
+                            }
+
+
+                            listHeadTodo.remove(p);
+                            notifyItemRemoved(p);
+                            notifyItemRangeChanged(p, listHeadTodo.size());
+
+
+
+                        });
+                AlertDialog dialog = alert.create();
+                dialog.show();
+
+                return true;
             });
         }
     }
@@ -119,7 +156,5 @@ public class adapterTodo extends RecyclerView.Adapter<adapterTodo.ViewHolder> {
 
         }
     }
-
-
 
 }

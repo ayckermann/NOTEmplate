@@ -66,13 +66,15 @@ public class templateTodo extends Activity {
 
             edtJudul.setText(judul);
 
-            for(int i = 0; i <MainActivity.transferHeadTodo.size();i++){
+
+            for(int i = 0; i <MainActivity.transferTodo.size();i++){
+                Log.e("TEST", String.valueOf(MainActivity.transferTodo.get(i).getId()));
                 if(MainActivity.transferTodo.get(i).getId() == id2){
+                    Log.e("TEST2", String.valueOf(MainActivity.transferTodo.get(i).getId()));
                     addItem(intent.getBooleanExtra("checkT"+i, false), intent.getStringExtra("textT"+i));
                 }
 
             }
-
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -171,7 +173,6 @@ public class templateTodo extends Activity {
         edtJudul = (EditText) findViewById(R.id.edtJudulTodo);
         edtContent = (EditText) findViewById(R.id.edtContentTodo);
 
-
         linearLayout = findViewById(R.id.layoutItem);
     }
 
@@ -182,7 +183,7 @@ public class templateTodo extends Activity {
         }
     }
     public void setData(int id3){
-        for(int i=0; i< editTexts.size();i++){
+        for(int i=0; i< MainActivity.transferTodo.size();i++){
             if(MainActivity.transferTodo.get(i).getId() == id3){
                 MainActivity.transferTodo.set(i,new Todo(id3, checkBoxes.get(i).isChecked(), editTexts.get(i).getText().toString()));
             }

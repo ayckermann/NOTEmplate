@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView rvNote;
     RecyclerView rvTodo;
-    com.ayckermann.notemplate.Adapter.adapterNote adapterNote;
-    com.ayckermann.notemplate.Adapter.adapterTodo adapterTodo;
+    static com.ayckermann.notemplate.Adapter.adapterNote adapterNote;
+    public static com.ayckermann.notemplate.Adapter.adapterTodo adapterTodo;
     FloatingActionButton btnAdd;
     Button btnNote, btnTodo, btnJadwal;
 
@@ -31,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Note> listNote = new ArrayList<>();
 
     public static ArrayList<Todo> transferTodo = new ArrayList<>();
-    ArrayList<Todo> listTodo = new ArrayList<>();
 
     public static ArrayList<HeadTodo> transferHeadTodo = new ArrayList<>();
     ArrayList<HeadTodo> listHeadTodo = new ArrayList<>();
@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, selectTemplate.class));
             }
         });
+
+        Log.e("count", String.valueOf(adapterNote.getItemCount()));
 
         listNote.add(new Note("NOTE","","" ));
         for (int i =0; i< transferNote.size();i++){
