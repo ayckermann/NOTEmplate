@@ -14,33 +14,43 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PILIH TEMPLATE"
+        android:text="SELECT TEMPLATE"
+        android:fontFamily="@font/segoeui_bold"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="24sp"
+        android:textSize="26sp"
         android:textStyle="bold" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:textSize="16dp"
+        android:theme="@style/BlackButton"
+        android:fontFamily="@font/segoeui_bold"
         android:onClick="templateNote"
         android:text="Note" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnTodo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:textSize="16dp"
+        android:theme="@style/BlackButton"
+        android:fontFamily="@font/segoeui_bold"
         android:onClick="templateTodo"
         android:text="To-do list" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnJadwal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:textSize="16dp"
+        android:theme="@style/BlackButton"
+        android:fontFamily="@font/segoeui_bold"
         android:onClick="templateJadwal"
         android:text="Schedule" />
 

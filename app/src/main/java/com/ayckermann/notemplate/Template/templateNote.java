@@ -11,21 +11,34 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+import androidx.annotation.NonNull;
+
 import com.ayckermann.notemplate.MainActivity;
 import com.ayckermann.notemplate.Model.Note;
 import com.ayckermann.notemplate.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Field;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class templateNote extends Activity {
 
     EditText edtJudul, edtContent;
-    FloatingActionButton btnSave;
+    FloatingActionButton btnSave, btnDelete;
     TextView txtTanggal;
+
+    FirebaseUser user;
+    FirebaseFirestore firestore;
+    Note note;
 
     @Override
 
@@ -44,47 +57,58 @@ public class templateNote extends Activity {
 
 
         Intent intent = getIntent();
-        getIntent().getExtras();
-        if (intent.hasExtra("judulN")){
-            int id = intent.getIntExtra("idN",0);
-            String judul = intent.getStringExtra("judulN");
-            String content = intent.getStringExtra("contentN");
-            String tanggal = intent.getStringExtra("tanggalN");
+        note = (Note) intent.getSerializableExtra("current_note");
+        if (note != null){
 
-
-            edtJudul.setText(judul);
-            edtContent.setText(content);
-            txtTanggal.setText(tanggal);
+            edtJudul.setText(note.judul);
+            edtContent.setText(note.content);
+            txtTanggal.setText(note.tanggal);
 
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String judul2 = edtJudul.getText().toString();
-                    String content2 = edtContent.getText().toString();
-                    String tanggal2 = txtTanggal.getText().toString();
+                    String userId = user.getUid();
+                    String judul = edtJudul.getText().toString();
+                    String content = edtContent.getText().toString();
+                    String tanggal = txtTanggal.getText().toString();
 
-                    Log.e("i", String.valueOf(id));
-                    Log.e("e", String.valueOf(MainActivity.transferNote.size()));
-
-                    MainActivity.transferNote.set(id, new Note( judul2,content2, tanggal2));
+                    Note note1 = new Note(userId, judul,content,tanggal);
+                    Map map = note1.asMap();
 
 
+                    firestore.collection("Note").document(note.uid).update(map)
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("Error edit FireStore ", e.getMessage());
+                                }
+                            });
+
+                    finish();
                     startActivity(new Intent(view.getContext(), MainActivity.class));
                 }
             });
         }
         else{
+            btnDelete.setVisibility(View.GONE);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String userId = user.getUid();
                     String judul = edtJudul.getText().toString();
                     String content = edtContent.getText().toString();
                     String tanggal = txtTanggal.getText().toString();
 
-                    MainActivity.transferNote.add(new Note(judul,content,tanggal));
-
+                    firestore.collection("Note").document()
+                            .set(new Note(userId,judul,content,tanggal))
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("Error add firestore ", e.getMessage());
+                                }
+                            });
+                    finish();
                     startActivity(new Intent(view.getContext(), MainActivity.class));
-
                 }
             });
         }
@@ -95,8 +119,21 @@ public class templateNote extends Activity {
         edtContent = findViewById(R.id.edtContentNote);
         txtTanggal = findViewById(R.id.txtTanggal);
         btnSave = (FloatingActionButton) findViewById(R.id.btnSaveNote);
+        btnDelete = (FloatingActionButton) findViewById(R.id.btnDeleteNote);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        firestore = FirebaseFirestore.getInstance();
     }
-
+    private void deleteNote(View v){
+        firestore.collection("Note").document(note.uid)
+                .delete()
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Error delete", e.getMessage());
+                    }
+                });
+        finish();
+    }
 
     public void setTanggal(){
         final Calendar c = Calendar.getInstance();

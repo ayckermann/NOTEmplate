@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/itemNote"
-    android:background="@drawable/rounded_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
     android:layout_marginTop="10dp"
-    android:orientation="vertical">
+    android:background="@drawable/rounded_item"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="5dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,14 +24,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="#000000"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/segoeui_bold" />
 
         <TextView
             android:id="@+id/txtContentN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:fontFamily="@font/segoe"
+            android:textColor="#000000"
             android:textSize="14sp" />
     </LinearLayout>
 

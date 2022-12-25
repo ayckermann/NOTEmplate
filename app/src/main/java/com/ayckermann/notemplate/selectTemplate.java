@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
@@ -32,11 +33,19 @@ public class selectTemplate extends Activity {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.dimAmount = 0.6f;
+
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
+
         getWindow().setLayout((int)(width*0.8),(int)(height*0.4));
+
         getWindow().setBackgroundDrawableResource(R.drawable.rounded_item);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(layoutParams);
+
 
     }
 

@@ -7,6 +7,23 @@
     android:background="#212529">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnDeleteNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="30dp"
+        app:tint="@color/white"
+        android:backgroundTint="#212529"
+        app:backgroundTint="@android:color/transparent"
+        app:borderWidth="0dp"
+        android:clickable="true"
+        android:onClick="deleteNote"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnSaveNote"
         android:layout_width="167dp"
         android:layout_height="wrap_content"
@@ -14,12 +31,16 @@
         android:layout_marginBottom="30dp"
         android:clickable="true"
         android:onClick="save"
+        app:tint="@color/white"
+        android:backgroundTint="#343A40"
+        app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_save"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
@@ -37,16 +58,16 @@
             android:id="@+id/edtJudulNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:ems="10"
             android:hint="Judul"
             android:inputType="textPersonName"
-            android:background="@null"
             android:minHeight="48dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="#000000"
             android:textSize="24sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/segoeui_bold"
             tools:ignore="SpeakableTextPresentCheck" />
 
 
@@ -61,20 +82,24 @@
             android:hint="Date"
             android:paddingRight="15dp"
             android:textAlignment="textEnd"
+            android:fontFamily="@font/segoeui_italic"
             android:textColor="#000000"
-            android:textColorHint="#737373"
-         />
+            android:textColorHint="#737373" />
 
         <EditText
             android:id="@+id/edtContentNote"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Content"
+            android:layout_height="match_parent"
             android:background="@null"
+            android:ems="10"
+            android:fontFamily="@font/segoe"
+            android:gravity="top"
+            android:hint="Content"
             android:inputType="textMultiLine"
             android:minHeight="48dp"
             android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
             android:paddingRight="10dp"
             android:textColor="#000000"
             tools:ignore="SpeakableTextPresentCheck" />
