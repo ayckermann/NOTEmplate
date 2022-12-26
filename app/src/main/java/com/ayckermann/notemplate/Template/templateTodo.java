@@ -2,6 +2,7 @@ package com.ayckermann.notemplate.Template;
 
 import android.app.Activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -18,27 +19,41 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ayckermann.notemplate.MainActivity;
-import com.ayckermann.notemplate.Model.HeadTodo;
-import com.ayckermann.notemplate.R;
+import com.ayckermann.notemplate.Model.Note;
 import com.ayckermann.notemplate.Model.Todo;
+import com.ayckermann.notemplate.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class templateTodo extends Activity {
 
-    FloatingActionButton btnSave;
+    FloatingActionButton btnSave, btnDelete;
     ImageButton btnAdd;
     EditText edtJudul,edtContent;
     LinearLayout linearLayout;
 
     ArrayList<EditText> editTexts = new ArrayList<EditText>();
     ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
+    ArrayList<Boolean> check = new ArrayList<>();
+    ArrayList<String> text = new ArrayList<>();
+
+    FirebaseUser user;
+    FirebaseFirestore firestore;
+    Todo todo;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,46 +70,58 @@ public class templateTodo extends Activity {
             }
         });
 
-
-
         Intent intent = getIntent();
-        getIntent().getExtras();
-        if (intent.hasExtra("judulT")){
+        todo = (Todo) intent.getSerializableExtra("current_todo");
 
-            int id2 = intent.getIntExtra("idT",0);
-            String judul = intent.getStringExtra("judulT");
+        if (todo!=null){
 
-            edtJudul.setText(judul);
-
-
-            for(int i = 0; i <MainActivity.transferTodo.size();i++){
-                Log.e("TEST", String.valueOf(MainActivity.transferTodo.get(i).getId()));
-                if(MainActivity.transferTodo.get(i).getId() == id2){
-                    Log.e("TEST2", String.valueOf(MainActivity.transferTodo.get(i).getId()));
-                    addItem(intent.getBooleanExtra("checkT"+i, false), intent.getStringExtra("textT"+i));
-                }
-
+            for(int i=0; i< todo.listCheck.size();i++){
+                addItem(todo.listCheck.get(i),todo.listText.get(i));
             }
+
+            edtJudul.setText(todo.judul);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String judul2 = edtJudul.getText().toString();
+                    String userId = user.getUid();
+                    String judul = edtJudul.getText().toString();
+                    getData();
+//                    Todo todo1 = new Todo(userId,judul,check,text);
+//                    Map map = todo1.asMap();
+//
+//                    firestore.collection("Todo").document(todo.uid).update(map)
+//                            .addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Log.e("Error edit FireStore ", e.getMessage());
+//                                }
+//                            });
+                    Toast.makeText(templateTodo.this, "Edit todo still in development.", Toast.LENGTH_SHORT).show();
 
-                    MainActivity.transferHeadTodo.set(id2, new HeadTodo(id2, judul2));
-                    setData(id2);
+                    finish();
                     startActivity(new Intent(view.getContext(), MainActivity.class));
                 }
             });
+
         }
         else{
+            btnDelete.setVisibility(View.GONE);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String userId = user.getUid();
                     String judul = edtJudul.getText().toString();
 
-                    getData(MainActivity.idT);
-                    MainActivity.transferHeadTodo.add(new HeadTodo(MainActivity.idT, judul ));
-                    MainActivity.idT++;
+                    getData();
+                    firestore.collection("Todo").document()
+                            .set(new Todo(userId,judul,check,text))
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("Error add firestore ", e.getMessage());
+                                }
+                            });
+                    finish();
 
                     startActivity(new Intent(view.getContext(), MainActivity.class));
                 }
@@ -170,24 +197,46 @@ public class templateTodo extends Activity {
     public void initComponent(){
         btnSave = (FloatingActionButton) findViewById(R.id.btnSaveTodo);
         btnAdd = (ImageButton) findViewById(R.id.btnAddTodo);
+        btnDelete = (FloatingActionButton) findViewById(R.id.btnDeleteTodo);
         edtJudul = (EditText) findViewById(R.id.edtJudulTodo);
         edtContent = (EditText) findViewById(R.id.edtContentTodo);
 
         linearLayout = findViewById(R.id.layoutItem);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        firestore = FirebaseFirestore.getInstance();
     }
 
-    public void getData(int id3){
+    public void getData(){
         for(int i=0; i< editTexts.size();i++){
-            MainActivity.transferTodo.add (new Todo(id3,checkBoxes.get(i).isChecked(),editTexts.get(i).getText().toString()));
-            Log.e("ID3", Integer.toString(id3));
+            check.add(checkBoxes.get(i).isChecked());
+            text.add(editTexts.get(i).getText().toString());
         }
     }
-    public void setData(int id3){
-        for(int i=0; i< MainActivity.transferTodo.size();i++){
-            if(MainActivity.transferTodo.get(i).getId() == id3){
-                MainActivity.transferTodo.set(i,new Todo(id3, checkBoxes.get(i).isChecked(), editTexts.get(i).getText().toString()));
-            }
-        }
+//    public void setData(){
+//        for(int i=0; i< editTexts.size();i++){
+//            checkBoxes.get(i).setChecked(todo.listCheck.get(i));
+//            editTexts.get(i).setText(todo.listText.get(i));
+//        }
+//    }
+    public void deleteTodo(View v){
+        AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
+        alert.setTitle("Delete Todo " + edtJudul.getText().toString() + " ?")
+                .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
+                .setNegativeButton("Yes", (dialogInterface, i) -> {
+
+                    firestore.collection("Todo").document(todo.uid)
+                            .delete()
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("Error delete", e.getMessage());
+                                }
+                            });
+                    finish();
+
+                });
+        AlertDialog dialog = alert.create();
+        dialog.show();
     }
 
 

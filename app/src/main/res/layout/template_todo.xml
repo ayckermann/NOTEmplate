@@ -5,6 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#212529">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnDeleteTodo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="#212529"
+        android:clickable="true"
+        android:onClick="deleteTodo"
+        app:backgroundTint="@android:color/transparent"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        app:tint="@color/white"
+        tools:ignore="SpeakableTextPresentCheck" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnSaveTodo"
         android:layout_width="167dp"
@@ -13,6 +31,9 @@
         android:layout_marginBottom="30dp"
         android:clickable="true"
         android:onClick="save"
+        app:tint="@color/white"
+        android:backgroundTint="#343A40"
+        app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_save"

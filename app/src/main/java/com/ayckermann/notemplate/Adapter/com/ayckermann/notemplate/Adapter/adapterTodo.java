@@ -1,42 +1,57 @@
 package com.ayckermann.notemplate.Adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.text.InputType;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ayckermann.notemplate.MainActivity;
-import com.ayckermann.notemplate.Model.HeadTodo;
-import com.ayckermann.notemplate.Model.Note;
+
 import com.ayckermann.notemplate.Model.Todo;
 import com.ayckermann.notemplate.R;
-import com.ayckermann.notemplate.Template.templateNote;
+
 import com.ayckermann.notemplate.Template.templateTodo;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-import java.util.ArrayList;
+public class adapterTodo extends FirestoreRecyclerAdapter<Todo, adapterTodo.ViewHolder> {
+    /**
+     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
+     * FirestoreRecyclerOptions} for configuration options.
+     *
+     * @param options
+     */
+    public adapterTodo(@NonNull FirestoreRecyclerOptions<Todo> options) {
+        super(options);
+    }
 
-public class adapterTodo extends RecyclerView.Adapter<adapterTodo.ViewHolder> {
+    @Override
+    protected void onBindViewHolder(@NonNull adapterTodo.ViewHolder holder, int position, @NonNull Todo model) {
+        holder.judul.setText(model.judul);
 
-    ArrayList<HeadTodo> listHeadTodo = new ArrayList<>();
+        for(int i =0 ; i< model.listCheck.size();i++){
+            holder.dynamicView(holder.itemView, model.listCheck.get(i), model.listText.get(i));
+        }
+        String uid = getSnapshots().getSnapshot(position).getId();
+        model.uid = uid;
 
-    public adapterTodo(ArrayList listHeadTodo){
-        this.listHeadTodo = listHeadTodo;
+        holder.listItemTodo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = holder.listItemTodo.getContext();
+                Intent intent = new Intent(context, templateTodo.class);
+                intent.putExtra("current_todo", (Todo) model);
+
+                context.startActivity(intent);
+            }
+        });
     }
 
     @NonNull
@@ -44,92 +59,16 @@ public class adapterTodo extends RecyclerView.Adapter<adapterTodo.ViewHolder> {
     public adapterTodo.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater =LayoutInflater.from(context);
-        adapterTodo.ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.item_todo, parent, false));
+        ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.item_todo, parent, false));
         return holder;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull adapterTodo.ViewHolder holder, int position) {
-        HeadTodo headTodo = listHeadTodo.get(position);
-        holder.judul.setText(headTodo.getJudul());
-
-        Log.e("POSISI", String.valueOf(position));
-
-        for(int i =0; i < MainActivity.transferTodo.size(); i++){
-            if(holder.getAdapterPosition()-1 == MainActivity.transferTodo.get(i).getId()){
-                holder.dynamicView(holder.itemView, MainActivity.transferTodo.get(i).isCheck(), MainActivity.transferTodo.get(i).getText());
-            }
-        }
-
-        if(position == 0){
-            holder.judul.setGravity(Gravity.CENTER);
-        }
-        else{
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent();
-
-                    intent = new Intent(view.getContext(), templateTodo.class);
-                    intent.putExtra("idT", holder.getAdapterPosition() -1);
-                    intent.putExtra("judulT", headTodo.getJudul());
-
-                    for(int i =0; i < MainActivity.transferTodo.size(); i++){
-                        if(holder.getAdapterPosition()-1 == MainActivity.transferTodo.get(i).getId()){
-                            intent.putExtra("checkT"+i, MainActivity.transferTodo.get(i).isCheck());
-                            intent.putExtra("textT"+i, MainActivity.transferTodo.get(i).getText());
-                        }
-                    }
-
-                    view.getContext().startActivity(intent);
-                }
-            });
-            holder.itemView.setOnLongClickListener(view -> {
-
-                int p = position;
-                AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
-                alert.setTitle("Delete Note " + headTodo.getJudul() + " ?")
-                        .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
-                        .setNegativeButton("Yes", (dialogInterface, i) -> {
-
-                            MainActivity.transferHeadTodo.remove(p-1);
-
-                            for(int x =0; x < MainActivity.transferTodo.size(); x++){
-                                if(p == MainActivity.transferTodo.get(x).getId()){
-                                    MainActivity.transferTodo.remove(x);
-                                    Log.e("ANJAS", String.valueOf(MainActivity.transferTodo.get(x).getId()) );
-                                }
-                            }
-
-
-                            listHeadTodo.remove(p);
-                            notifyItemRemoved(p);
-                            notifyItemRangeChanged(p, listHeadTodo.size());
-
-
-
-                        });
-                AlertDialog dialog = alert.create();
-                dialog.show();
-
-                return true;
-            });
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return listHeadTodo.size();
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView judul;
         LinearLayout listItemTodo;
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             judul = itemView.findViewById(R.id.txtJudulT);
-
             listItemTodo = itemView.findViewById(R.id.listItemTodo);
 
         }
@@ -145,16 +84,17 @@ public class adapterTodo extends RecyclerView.Adapter<adapterTodo.ViewHolder> {
 
             final CheckBox checkBox =new CheckBox(view.getContext());
             checkBox.setEnabled(false);
+            checkBox.setHighlightColor(Color.BLACK);
             checkBox.setChecked(check);
             layoutItem.addView(checkBox);
 
             final TextView textView = new TextView(view.getContext());
             textView.setText(text);
+            textView.setTextColor(Color.BLACK);
             layoutItem.addView(textView);
 
             listItemTodo.addView(layoutItem);
 
         }
     }
-
 }

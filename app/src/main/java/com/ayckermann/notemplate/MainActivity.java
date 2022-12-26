@@ -1,9 +1,5 @@
 package com.ayckermann.notemplate;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -12,10 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.ayckermann.notemplate.Adapter.adapterJadwal;
 import com.ayckermann.notemplate.Adapter.adapterNote;
+
 import com.ayckermann.notemplate.Adapter.adapterTodo;
-import com.ayckermann.notemplate.Model.HeadTodo;
 import com.ayckermann.notemplate.Model.Jadwal;
 import com.ayckermann.notemplate.Model.Note;
 import com.ayckermann.notemplate.Model.Todo;
@@ -27,27 +27,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView rvNote;
     RecyclerView rvTodo;
     RecyclerView rvJadwal;
     adapterNote adapterNote;
-    com.ayckermann.notemplate.Adapter.adapterJadwal adapterJadwal;
-    public static com.ayckermann.notemplate.Adapter.adapterTodo adapterTodo;
+    adapterJadwal adapterJadwal;
+    adapterTodo adapterTodo;
+
     FloatingActionButton btnAdd;
     FloatingActionButton btnLogOut;
     Button btnNote, btnTodo, btnJadwal;
 
-    public static ArrayList<Todo> transferTodo = new ArrayList<>();
-
-    public static ArrayList<HeadTodo> transferHeadTodo = new ArrayList<>();
-    ArrayList<HeadTodo> listHeadTodo = new ArrayList<>();
-
-    public static int idT =0;
 
     FirebaseUser user;
     FirebaseAuth mAuth;
@@ -63,15 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         initComponent();
         initFab();
-
-
-//        listHeadTodo.add(new HeadTodo(0,"TODO"));
-//        for (int i =0; i< transferHeadTodo.size();i++){
-//
-//            listHeadTodo.add(new HeadTodo(transferHeadTodo.get(i).getId() ,transferHeadTodo.get(i).getJudul()));
-//
-//        }
-//        adapterTodo.notifyDataSetChanged();
 
 
     }
@@ -102,6 +85,16 @@ public class MainActivity extends AppCompatActivity {
             rvJadwal.setAdapter(adapterJadwal);
             adapterJadwal.startListening();
 
+        //Jadwal
+        Query query3 = firestore.collection("Todo")
+                .whereEqualTo("userId", user.getUid());
+
+        FirestoreRecyclerOptions<Todo> options3 = new FirestoreRecyclerOptions.Builder<Todo>()
+                .setQuery(query3, Todo.class).build();
+
+        adapterTodo = new adapterTodo(options3);
+        rvTodo.setAdapter(adapterTodo);
+        adapterTodo.startListening();
 
 
 
@@ -126,9 +119,7 @@ public class MainActivity extends AppCompatActivity {
         rvJadwal = findViewById(R.id.rvJadwal);
         rvJadwal.setLayoutManager(new LinearLayoutManager(this));
 
-        adapterTodo =new adapterTodo(listHeadTodo);
         rvTodo = findViewById(R.id.rvTodo);
-        rvTodo.setAdapter(adapterTodo);
         rvTodo.setLayoutManager(new LinearLayoutManager(this));
 
         firestore = FirebaseFirestore.getInstance();
