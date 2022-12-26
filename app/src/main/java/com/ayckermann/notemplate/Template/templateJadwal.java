@@ -1,6 +1,7 @@
 package com.ayckermann.notemplate.Template;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -136,15 +137,25 @@ public class templateJadwal extends Activity {
         firestore = FirebaseFirestore.getInstance();
     }
     public void deleteJadwal(View v){
-        firestore.collection("Jadwal").document(jadwal.uid)
-                .delete()
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Error delete", e.getMessage());
-                    }
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
+        alert.setTitle("Delete Jadwal " + edtJudul.getText().toString() + " ?")
+                .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
+                .setNegativeButton("Yes", (dialogInterface, i) -> {
+
+                    firestore.collection("Jadwal").document(jadwal.uid)
+                            .delete()
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("Error delete", e.getMessage());
+                                }
+                            });
+                    finish();
+
                 });
-        finish();
+        AlertDialog dialog = alert.create();
+        dialog.show();
     }
 
 }

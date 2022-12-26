@@ -1,6 +1,7 @@
 package com.ayckermann.notemplate.Template;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -124,15 +125,24 @@ public class templateNote extends Activity {
         firestore = FirebaseFirestore.getInstance();
     }
     public void deleteNote(View v){
-        firestore.collection("Note").document(note.uid)
-                .delete()
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Error delete", e.getMessage());
-                    }
+        AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
+        alert.setTitle("Delete Note " + edtJudul.getText().toString() + " ?")
+                .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
+                .setNegativeButton("Yes", (dialogInterface, i) -> {
+
+                    firestore.collection("Note").document(note.uid)
+                            .delete()
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("Error delete", e.getMessage());
+                                }
+                            });
+                    finish();
+
                 });
-        finish();
+        AlertDialog dialog = alert.create();
+        dialog.show();
     }
 
     public void setTanggal(){
