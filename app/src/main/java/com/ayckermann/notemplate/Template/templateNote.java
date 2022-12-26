@@ -92,6 +92,7 @@ public class templateNote extends Activity {
         }
         else{
             btnDelete.setVisibility(View.GONE);
+            btnDelete.setEnabled(false);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

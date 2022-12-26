@@ -83,28 +83,20 @@ public class templateTodo extends Activity {
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String userId = user.getUid();
-                    String judul = edtJudul.getText().toString();
-                    getData();
-//                    Todo todo1 = new Todo(userId,judul,check,text);
-//                    Map map = todo1.asMap();
-//
-//                    firestore.collection("Todo").document(todo.uid).update(map)
-//                            .addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    Log.e("Error edit FireStore ", e.getMessage());
-//                                }
-//                            });
-                    Toast.makeText(templateTodo.this, "Edit todo still in development.", Toast.LENGTH_SHORT).show();
+//                    String userId = user.getUid();
+////                    String judul = edtJudul.getText().toString();
+////                    getData();
+
+                    Toast.makeText(templateTodo.this, "Edit todo is still in development.", Toast.LENGTH_SHORT).show();
 
                     finish();
-                    startActivity(new Intent(view.getContext(), MainActivity.class));
+
                 }
             });
 
         }
         else{
+            btnDelete.setEnabled(false);
             btnDelete.setVisibility(View.GONE);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,7 +155,7 @@ public class templateTodo extends Activity {
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         editText.setText(text);
         editText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 8);
-        editText.setTypeface(Typeface.SERIF, Typeface.BOLD);
+
         editText.setTextColor(Color.BLACK);
         editText.setPressed(true);
         editText.setCursorVisible(true);
@@ -212,12 +204,7 @@ public class templateTodo extends Activity {
             text.add(editTexts.get(i).getText().toString());
         }
     }
-//    public void setData(){
-//        for(int i=0; i< editTexts.size();i++){
-//            checkBoxes.get(i).setChecked(todo.listCheck.get(i));
-//            editTexts.get(i).setText(todo.listText.get(i));
-//        }
-//    }
+
     public void deleteTodo(View v){
         AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
         alert.setTitle("Delete Todo " + edtJudul.getText().toString() + " ?")
