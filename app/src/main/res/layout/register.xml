@@ -7,26 +7,27 @@
     android:background="#212529"
     tools:context=".Register">
 
-    <TextView
-        android:id="@+id/txtRegCurhat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:fontFamily="cursive"
-        android:text="Curhat Kita"
-        android:textAlignment="viewStart"
-        android:textColor="#FFFF8D"
-        android:textSize="48sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="244dp"
+        android:layout_height="211dp"
+        android:layout_marginTop="100dp"
+        android:adjustViewBounds="true"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/notemplate_icon" />
 
     <EditText
         android:id="@+id/edtRegEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="your@email.com"
@@ -37,7 +38,7 @@
         android:textColorHint="#ADB5BD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtRegCurhat" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
 
     <EditText
         android:id="@+id/edtRegPassword"

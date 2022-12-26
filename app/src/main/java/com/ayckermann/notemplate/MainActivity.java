@@ -12,9 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ayckermann.notemplate.Adapter.adapterJadwal;
 import com.ayckermann.notemplate.Adapter.adapterNote;
 import com.ayckermann.notemplate.Adapter.adapterTodo;
 import com.ayckermann.notemplate.Model.HeadTodo;
+import com.ayckermann.notemplate.Model.Jadwal;
 import com.ayckermann.notemplate.Model.Note;
 import com.ayckermann.notemplate.Model.Todo;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -32,14 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView rvNote;
     RecyclerView rvTodo;
+    RecyclerView rvJadwal;
     adapterNote adapterNote;
+    com.ayckermann.notemplate.Adapter.adapterJadwal adapterJadwal;
     public static com.ayckermann.notemplate.Adapter.adapterTodo adapterTodo;
     FloatingActionButton btnAdd;
     FloatingActionButton btnLogOut;
     Button btnNote, btnTodo, btnJadwal;
-
-    public static ArrayList<Note> transferNote = new ArrayList<>();
-    ArrayList<Note> listNote = new ArrayList<>();
 
     public static ArrayList<Todo> transferTodo = new ArrayList<>();
 
@@ -77,22 +78,31 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-        if(intent.hasExtra("offline")){
 
-        }
-        else{
-            if(!firestore.collection("Note")
-                    .whereEqualTo("userId", user.getUid()).equals(null)){
-                Query query = firestore.collection("Note")
-                        .whereEqualTo("userId", user.getUid());
+            //Note
+            Query query1 = firestore.collection("Note")
+                    .whereEqualTo("userId", user.getUid());
 
-                FirestoreRecyclerOptions<Note> options = new FirestoreRecyclerOptions.Builder<Note>()
-                        .setQuery(query, Note.class).build();
-                adapterNote = new adapterNote(options);
-                rvNote.setAdapter(adapterNote);
-                adapterNote.startListening();
-            }
-        }
+            FirestoreRecyclerOptions<Note> options1 = new FirestoreRecyclerOptions.Builder<Note>()
+                    .setQuery(query1, Note.class).build();
+
+            adapterNote = new adapterNote(options1);
+            rvNote.setAdapter(adapterNote);
+            adapterNote.startListening();
+
+
+            //Jadwal
+            Query query2 = firestore.collection("Jadwal")
+                    .whereEqualTo("userId", user.getUid());
+
+            FirestoreRecyclerOptions<Jadwal> options2 = new FirestoreRecyclerOptions.Builder<Jadwal>()
+                    .setQuery(query2, Jadwal.class).build();
+
+            adapterJadwal = new adapterJadwal(options2);
+            rvJadwal.setAdapter(adapterJadwal);
+            adapterJadwal.startListening();
+
+
 
 
     }
@@ -113,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
         rvNote = findViewById(R.id.rvNote);
         rvNote.setLayoutManager(new LinearLayoutManager(this));
 
+        rvJadwal = findViewById(R.id.rvJadwal);
+        rvJadwal.setLayoutManager(new LinearLayoutManager(this));
+
         adapterTodo =new adapterTodo(listHeadTodo);
         rvTodo = findViewById(R.id.rvTodo);
         rvTodo.setAdapter(adapterTodo);
@@ -121,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
                 .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)

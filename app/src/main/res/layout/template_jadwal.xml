@@ -17,7 +17,7 @@
         app:backgroundTint="@android:color/transparent"
         app:borderWidth="0dp"
         android:clickable="true"
-        android:onClick="deleteJadwal"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete"
@@ -49,6 +49,8 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_item"
         android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,18 +60,279 @@
             android:id="@+id/edtJudulJadwl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
             android:ems="10"
-            android:hint="Judul"
+            android:fontFamily="@font/segoeui_bold"
+            android:hint="Title"
             android:inputType="textPersonName"
             android:minHeight="48dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:paddingRight="10dp"
             android:textColor="#000000"
             android:textSize="24sp"
-            android:fontFamily="@font/segoeui_bold"
             tools:ignore="SpeakableTextPresentCheck" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/monday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoeui_bold"
+                    android:text="Monday"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/txtMonday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:fontFamily="@font/segoe"
+                    android:gravity="start|top"
+                    android:hint="- your schedule"
+                    android:inputType="textMultiLine"
+                    android:minHeight="48dp"
+                    android:textColorHint="#6A6A6A"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoeui_bold"
+                    android:text="Tuesday"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/txtTuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:fontFamily="@font/segoe"
+                    android:gravity="start|top"
+                    android:hint="- your schedule"
+                    android:inputType="textMultiLine"
+                    android:minHeight="48dp"
+                    android:textColorHint="#6A6A6A"
+                    android:textSize="14sp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/wednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoeui_bold"
+                    android:text="Wednesday"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/txtWednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:fontFamily="@font/segoe"
+                    android:gravity="start|top"
+                    android:hint="- your schedule"
+                    android:inputType="textMultiLine"
+                    android:minHeight="48dp"
+                    android:textColorHint="#6A6A6A"
+                    android:textSize="14sp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/thursday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoeui_bold"
+                    android:text="Thursday"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/txtThursday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:fontFamily="@font/segoe"
+                    android:gravity="start|top"
+                    android:hint="- your schedule"
+                    android:inputType="textMultiLine"
+                    android:minHeight="48dp"
+                    android:textColorHint="#6A6A6A"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/friday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoeui_bold"
+                    android:text="Friday"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/txtFriday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:fontFamily="@font/segoe"
+                    android:gravity="start|top"
+                    android:hint="- your schedule"
+                    android:inputType="textMultiLine"
+                    android:minHeight="48dp"
+                    android:textColorHint="#6A6A6A"
+                    android:textSize="14sp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/saturday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoeui_bold"
+                    android:text="Saturday"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/txtSaturday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:fontFamily="@font/segoe"
+                    android:gravity="start|top"
+                    android:hint="- your schedule"
+                    android:inputType="textMultiLine"
+                    android:minHeight="48dp"
+                    android:textColorHint="#6A6A6A"
+                    android:textSize="14sp"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="deleteJadwal"
+                android:orientation="vertical"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/sunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoeui_bold"
+                    android:text="Sunday"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/txtSunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:fontFamily="@font/segoe"
+                    android:gravity="start|top"
+                    android:hint="- your schedule"
+                    android:inputType="textMultiLine"
+                    android:minHeight="48dp"
+                    android:textColorHint="#6A6A6A"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"></LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

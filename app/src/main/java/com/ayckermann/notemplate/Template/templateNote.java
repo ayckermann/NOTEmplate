@@ -123,7 +123,7 @@ public class templateNote extends Activity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         firestore = FirebaseFirestore.getInstance();
     }
-    private void deleteNote(View v){
+    public void deleteNote(View v){
         firestore.collection("Note").document(note.uid)
                 .delete()
                 .addOnFailureListener(new OnFailureListener() {
