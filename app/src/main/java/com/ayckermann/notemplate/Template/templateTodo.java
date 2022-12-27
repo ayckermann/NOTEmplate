@@ -96,8 +96,6 @@ public class templateTodo extends Activity {
 
         }
         else{
-            btnDelete.setEnabled(false);
-            btnDelete.setVisibility(View.GONE);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -206,24 +204,30 @@ public class templateTodo extends Activity {
     }
 
     public void deleteTodo(View v){
-        AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
-        alert.setTitle("Delete Todo " + edtJudul.getText().toString() + " ?")
-                .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
-                .setNegativeButton("Yes", (dialogInterface, i) -> {
+        if(todo!=null){
+            AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
+            alert.setTitle("Delete Todo " + edtJudul.getText().toString() + " ?")
+                    .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
+                    .setNegativeButton("Yes", (dialogInterface, i) -> {
 
-                    firestore.collection("Todo").document(todo.uid)
-                            .delete()
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e("Error delete", e.getMessage());
-                                }
-                            });
-                    finish();
+                        firestore.collection("Todo").document(todo.uid)
+                                .delete()
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("Error delete", e.getMessage());
+                                    }
+                                });
+                        finish();
 
-                });
-        AlertDialog dialog = alert.create();
-        dialog.show();
+                    });
+            AlertDialog dialog = alert.create();
+            dialog.show();
+        }
+        else{
+            startActivity(new Intent(v.getContext(), MainActivity.class));
+        }
+
     }
 
 

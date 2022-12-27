@@ -60,7 +60,6 @@ public class templateNote extends Activity {
         Intent intent = getIntent();
         note = (Note) intent.getSerializableExtra("current_note");
         if (note != null){
-
             edtJudul.setText(note.judul);
             edtContent.setText(note.content);
             txtTanggal.setText(note.tanggal);
@@ -91,8 +90,6 @@ public class templateNote extends Activity {
             });
         }
         else{
-            btnDelete.setVisibility(View.GONE);
-            btnDelete.setEnabled(false);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -126,24 +123,29 @@ public class templateNote extends Activity {
         firestore = FirebaseFirestore.getInstance();
     }
     public void deleteNote(View v){
-        AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
-        alert.setTitle("Delete Note " + edtJudul.getText().toString() + " ?")
-                .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
-                .setNegativeButton("Yes", (dialogInterface, i) -> {
+        if(note!=null){
+            AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
+            alert.setTitle("Delete Note " + edtJudul.getText().toString() + " ?")
+                    .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
+                    .setNegativeButton("Yes", (dialogInterface, i) -> {
 
-                    firestore.collection("Note").document(note.uid)
-                            .delete()
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e("Error delete", e.getMessage());
-                                }
-                            });
-                    finish();
+                        firestore.collection("Note").document(note.uid)
+                                .delete()
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("Error delete", e.getMessage());
+                                    }
+                                });
+                        finish();
 
-                });
-        AlertDialog dialog = alert.create();
-        dialog.show();
+                    });
+            AlertDialog dialog = alert.create();
+            dialog.show();
+        }
+        else{
+            startActivity(new Intent(v.getContext(), MainActivity.class));
+        }
     }
 
     public void setTanggal(){

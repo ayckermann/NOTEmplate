@@ -12,15 +12,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="30dp"
-        app:tint="@color/white"
         android:backgroundTint="#212529"
+        android:clickable="true"
+        android:onClick="deleteJadwal"
         app:backgroundTint="@android:color/transparent"
         app:borderWidth="0dp"
-        android:clickable="true"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete"
+        app:tint="@color/white"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

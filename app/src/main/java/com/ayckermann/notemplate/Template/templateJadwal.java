@@ -88,8 +88,6 @@ public class templateJadwal extends Activity {
             });
         }
         else{
-            btnDelete.setVisibility(View.GONE);
-            btnDelete.setEnabled(false);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -138,25 +136,30 @@ public class templateJadwal extends Activity {
         firestore = FirebaseFirestore.getInstance();
     }
     public void deleteJadwal(View v){
+        if(jadwal!=null){
+            AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
+            alert.setTitle("Delete Jadwal " + edtJudul.getText().toString() + " ?")
+                    .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
+                    .setNegativeButton("Yes", (dialogInterface, i) -> {
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert);
-        alert.setTitle("Delete Jadwal " + edtJudul.getText().toString() + " ?")
-                .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
-                .setNegativeButton("Yes", (dialogInterface, i) -> {
+                        firestore.collection("Jadwal").document(jadwal.uid)
+                                .delete()
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("Error delete", e.getMessage());
+                                    }
+                                });
+                        finish();
 
-                    firestore.collection("Jadwal").document(jadwal.uid)
-                            .delete()
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e("Error delete", e.getMessage());
-                                }
-                            });
-                    finish();
+                    });
+            AlertDialog dialog = alert.create();
+            dialog.show();
+        }
+        else{
+            startActivity(new Intent(v.getContext(), MainActivity.class));
+        }
 
-                });
-        AlertDialog dialog = alert.create();
-        dialog.show();
     }
 
 }
