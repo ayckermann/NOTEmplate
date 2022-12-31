@@ -161,7 +161,7 @@ public class templateNote extends Activity {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        txtTanggal.setText( getMonthForInt(monthOfYear)+ " " + dayOfMonth + ", " + year);
+                        txtTanggal.setText(  dayOfMonth + " " + getMonthForInt(monthOfYear)+ " " + + year);
 
                     }
                 },

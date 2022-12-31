@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             rvJadwal.setAdapter(adapterJadwal);
             adapterJadwal.startListening();
 
-        //Jadwal
+        //Todo
         Query query3 = firestore.collection("Todo")
                 .whereEqualTo("userId", user.getUid());
 
